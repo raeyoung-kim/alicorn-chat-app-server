@@ -17,11 +17,16 @@ connect();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(helmet());
-app.use(cors());
+app.use(
+  cors({
+    origin: process.env.ALLOWED_ORIGIN,
+    credentials: true,
+  })
+);
 app.use(cookieParser());
 app.use(morgan('tiny'));
 
-app.use('/user', authRouter);
+app.use('/auth', authRouter);
 
 app.use((req: Request, res: Response, next: NextFunction) => {
   res.sendStatus(400);
